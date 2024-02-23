@@ -131,7 +131,6 @@ npm run dev
 - GitHub: [@King Immanuel](https://github.com/kingno3l)
 - LinkedIn: [@King Immanuel](https://www.linkedin.com/in/kingno3l)
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 🔭 Future Features <a name="future-features"></a>
