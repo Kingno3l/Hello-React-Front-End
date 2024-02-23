@@ -1,67 +1,28 @@
-import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { fetchRandomMessage } from '../redux/actions';
-import '../modules/greeting.css';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGreeting } from '../redux/slices/greeting/greetingSlice';
 
-const Greeting = ({ randomMessage, fetchRandomMessage }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [countdown, setCountdown] = useState(10);
+const Greeting = () => {
+  const dispatch = useDispatch();
+  const { message, status, error } = useSelector((state) => state.greeting);
 
   useEffect(() => {
-    const fetchMessage = async () => {
-      try {
-        await fetchRandomMessage();
-        setIsLoading(false);
-      } catch (error) {
-        throw new Error('Error fetching data:', error);
-      }
-    };
+    dispatch(fetchGreeting());
+  }, [dispatch]);
 
-    fetchMessage();
-  }, [fetchRandomMessage]);
-
-  useEffect(() => {
-    if (countdown === 0) {
-      fetchRandomMessage();
-      setCountdown(10);
-    } else {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [countdown, fetchRandomMessage]);
-
-  if (isLoading) {
-    return <div className="loading">Loading...</div>;
+  if (status === 'loading') {
+    return <div className="font-thin animate-pulse">...</div>;
+  } if (status === 'failed') {
+    return (
+      <div className="font-thin">
+        Error:
+        {error}
+      </div>
+    );
+  } if (status === 'succeeded') {
+    return <>{message}</>;
   }
-
-  return (
-    <div className="greeting-content">
-      <h1>Greeting of the day</h1>
-      <p>
-        &quot;
-        {randomMessage}
-        &quot;
-      </p>
-      <h2>
-        Greeting changes in:
-        {' '}
-        <span>{countdown}</span>
-      </h2>
-    </div>
-  );
+  return null;
 };
 
-Greeting.propTypes = {
-  randomMessage: PropTypes.string.isRequired,
-  fetchRandomMessage: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  randomMessage: state.randomMessage,
-});
-
-const ConnectedGreeting = connect(mapStateToProps, { fetchRandomMessage })(Greeting);
-
-export default ConnectedGreeting;
+export default Greeting;
