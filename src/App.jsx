@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Greeting from './components/Greeting';
-import { fetchGreeting } from './redux/slices/greeting/greetingSlice';
 
 // Define your App component
 function App() {
