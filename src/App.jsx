@@ -1,22 +1,21 @@
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Greeting from './components/Greeting';
 import { fetchGreeting } from './redux/slices/greeting/greetingSlice';
 
+// Define your App component
 function App() {
-  const dispatch = useDispatch();
-
-  const refreshGreeting = () => {
-    dispatch(fetchGreeting());
-  };
-
   return (
-    <div className="text-center text-red-800">
-      <h1 className="h-36 w-4/5 font-black">
-        <Greeting />
-      </h1>
-      <button type="button" onClick={refreshGreeting} className="mt-8">Refresh</button>
-    </div>
+    <Router>
+      <div className="text-center text-red-800">
+        <Switch>
+          {/* Route for the Greeting component */}
+          <Route path="/greeting" component={Greeting} />
+          {/* You can add more routes here if needed */}
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
